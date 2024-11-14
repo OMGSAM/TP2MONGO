@@ -1,0 +1,78 @@
+1
+db.etudiants.insertOne({
+    nom: "Dupont",
+    age: 22,
+    classe: "Mathématiques",
+    notes: [85, 90, 78]
+});
+
+2
+db.produits.insertMany([
+    { nom: "Téléphone", prix: 299, qteEnStock: 50, categorie: "Électronique" },
+    { nom: "Ordinateur Portable", prix: 999, qteEnStock: 30, categorie: "Électronique" }
+]);
+
+3
+db.clients.find({ ville: "Paris" });
+
+4
+db.produits.find({ prix: { $gt: 100 } });
+
+5
+db.etudiants.find({ age: { $gt: 20 }, classe: "Mathématiques" });
+
+6
+db.produits.find({
+    $or: [
+        { qteEnStock: { $lt: 10 } },
+        { prix: { $lt: 50 } }
+    ]
+});
+
+5 // Modifier l'adresse d'un client spécifique (Dupont)
+db.clients.updateOne(
+    { nom: "Dupont" },
+    { $set: { adresse: "Nouvelle Adresse" } }
+);
+
+6 // Mettre à jour le salaire des employés du département Ventes
+db.employes.updateMany(
+    { departement: "Ventes" },
+    { $set: { salaire: 3000 } }
+);
+
+7 // Augmenter le prix des produits de la catégorie Électronique de 5
+db.produits.updateMany(
+    { categorie: "Électronique" },
+    { $inc: { prix: 5 } }
+);
+
+8 // Ajouter une nouvelle note à l'étudiant "Martin"
+db.etudiants.updateOne(
+    { nom: "Martin" },
+    { $push: { notes: 80 } }
+);
+
+9  // Supprimer un produit spécifique (Ordinateur Portable)
+db.produits.deleteOne({ nom: "Ordinateur Portable" });
+
+10 // Supprimer tous les clients de Lyon
+db.clients.deleteMany({ ville: "Lyon" });
+
+11 // Trouver tous les étudiants en Physique ou Chimie
+db.etudiants.find({ classe: { $in: ["Physique", "Chimie"] } });
+
+12 // Trouver les employés dont le nom commence par "J"
+db.employes.find({ nom: { $regex: "^J" } });
+
+13 // Récupérer toutes les commandes triées par date décroissante
+db.commandes.find().sort({ date: -1 });
+
+14 // Afficher les 5 premiers produits les plus chers
+db.produits.find().sort({ prix: -1 }).limit(5);
+
+15 // Récupérer uniquement les champs nom et prix des produits
+db.produits.find({}, { nom: 1, prix: 1, _id: 0 });
+
+16 Trouver tous les clients dont le statut n'est pas "Actif"
+db.clients.find({ statut: { $ne: "Actif" } });
